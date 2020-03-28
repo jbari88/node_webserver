@@ -7,12 +7,15 @@ app.set('port', process.env.PORT || 3000);
 
 app.use(express.static(__dirname+'/public'));
 
+
+var fortune = require('./lib/fortune.js');
+
 app.get('/', function(req,res){
 	res.render('home');
 });
 
 app.get('/about', function(req,res){
-	res.render('about');
+	res.render('about', {fortune:fortune.getFortune()});
 });
 
 
