@@ -10,14 +10,30 @@ app.use(express.static(__dirname+'/public'));
 
 var fortune = require('./lib/fortune.js');
 
+app.use(function(req,res,next){
+	res.locals.showTests= app.get('env') !== 'production' && req.query.test==='1';
+	next();
+});
+
+
 app.get('/', function(req,res){
 	res.render('home');
 });
 
 app.get('/about', function(req,res){
-	res.render('about', {fortune:fortune.getFortune()});
+	res.render('about', {
+		fortune:fortune.getFortune(),
+		pageTestScript: '/qa/test-about.js'
+	});
 });
 
+app.get('/tour/hood-river', function(req,res){
+	res.render('tour/hood-river');
+});
+
+app.get('/tour/request-group-rate', function(req,res){
+	res.render('tour/request-group-rate');
+});
 
 app.use(function(req,res){
 	//res.type('text/plain');
